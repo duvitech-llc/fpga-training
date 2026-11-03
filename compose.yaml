@@ -1,0 +1,33 @@
+x-tools: &tools
+  build: ./docker
+  image: fpga-training-sim
+  platform: linux/amd64
+  # Run as the host user so generated files are not owned by root.
+  user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+  working_dir: /work
+  volumes:
+    - .:/work
+
+services:
+  # Command-line access to the tools.
+  sim:
+    <<: *tools
+
+  # VS Code in the browser, at http://localhost:8080
+  ide:
+    <<: *tools
+    command: >
+      code-server
+      --bind-addr 0.0.0.0:8080
+      --auth password
+      --disable-telemetry
+      --disable-update-check
+      --disable-workspace-trust
+      --extensions-dir /opt/code-server-extensions
+      /work
+    environment:
+      - PASSWORD=${IDE_PASSWORD:-fpga-training}
+    # Only reachable from this machine. A shared host also needs HTTPS and a
+    # real password before this binding is opened up.
+    ports:
+      - "127.0.0.1:${IDE_PORT:-8080}:8080"

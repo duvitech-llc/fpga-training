@@ -1,0 +1,36 @@
+[tasks]
+wb_bridge          prove wbb
+wb_bridge_cover    cover wbb
+timer              prove tim
+timer_cover        cover tim
+map                prove map
+map_cover          cover map
+
+[options]
+prove: mode prove
+prove: depth 8
+cover: mode cover
+wb_bridge_cover: depth 16
+timer_cover: depth 16
+# Seven targets now, the timer and the default responder included: answering all
+# of them in one cycle takes more clocks than Tutorial 26 needed.
+map_cover: depth 24
+
+[engines]
+smtbmc
+
+[script]
+wbb: read -formal wb_checker.v rv_wb_bridge.v
+wbb: prep -top rv_wb_bridge
+tim: read -formal wb_checker.v wb_timer.v
+tim: prep -top wb_timer
+map: read -formal wb_checker.v wb_interconnect.v map_check.v
+map: prep -top map_check
+
+[files]
+formal/wb_checker.v
+formal/map_check.v
+rtl/rv_wb_bridge.v
+rtl/wb_timer.v
+rtl/wb_interconnect.v
+rtl/soc_map.vh

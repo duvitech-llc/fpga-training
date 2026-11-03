@@ -1,0 +1,23 @@
+[tasks]
+d256
+d16
+d10
+huge
+
+[options]
+mode prove
+depth 4
+
+[engines]
+smtbmc
+
+[script]
+read -formal sync_ram.v
+d256: chparam -set DEPTH 256 sync_ram
+d16: chparam -set DEPTH 16 sync_ram
+d10: chparam -set DEPTH 10 sync_ram
+huge: chparam -set WIDTH 32 -set DEPTH 1048576 sync_ram
+prep -top sync_ram
+
+[files]
+rtl/sync_ram.v

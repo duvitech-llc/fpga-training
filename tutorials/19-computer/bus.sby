@@ -1,0 +1,19 @@
+[tasks]
+prove
+cover
+
+[options]
+prove: mode prove
+prove: depth 4
+cover: mode cover
+cover: depth 6
+
+[engines]
+smtbmc
+
+[script]
+read -formal bus.v
+prep -top bus
+
+[files]
+rtl/bus.v

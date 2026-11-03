@@ -1,0 +1,33 @@
+[tasks]
+regfile            prove rf rf3
+regfile_latency1   prove rf
+regfile_cover      cover rf rf3
+interconnect       prove ic
+interconnect_cover cover ic
+master             prove ms
+master_cover       cover ms
+
+[options]
+prove: mode prove
+prove: depth 8
+cover: mode cover
+cover: depth 16
+
+[engines]
+smtbmc
+
+[script]
+read -formal wb_checker.v
+rf: read -formal wb_regfile.v
+rf3: chparam -set LATENCY 3 wb_regfile
+rf: prep -top wb_regfile
+ic: read -formal wb_interconnect.v
+ic: prep -top wb_interconnect
+ms: read -formal wb_master.v
+ms: prep -top wb_master
+
+[files]
+formal/wb_checker.v
+rtl/wb_regfile.v
+rtl/wb_interconnect.v
+rtl/wb_master.v

@@ -1,0 +1,21 @@
+[tasks]
+n3
+n4
+n5
+
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal fixed_arbiter.v rr_arbiter.v
+n3: chparam -set N 3 rr_arbiter
+n4: chparam -set N 4 rr_arbiter
+n5: chparam -set N 5 rr_arbiter
+prep -top rr_arbiter
+
+[files]
+rtl/fixed_arbiter.v
+rtl/rr_arbiter.v

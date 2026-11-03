@@ -1,0 +1,18 @@
+[tasks]
+mod10
+mod16
+
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal counter.v
+mod10: chparam -set MOD 10 counter
+mod16: chparam -set MOD 16 counter
+prep -top counter
+
+[files]
+rtl/counter.v

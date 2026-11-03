@@ -1,0 +1,43 @@
+[tasks]
+arbiter          prove a_arb
+arbiter_cover    cover a_arb
+arbiter3         prove a_arb a_arb3
+arbiter3_cover   cover a_arb a_arb3
+dma              prove a_dma
+dma_cover        cover a_dma
+map              prove a_map
+map_cover        cover a_map
+
+[options]
+prove: mode prove
+arbiter: depth 32
+arbiter3: depth 32
+dma: depth 16
+map: depth 16
+cover: mode cover
+cover: depth 24
+
+[engines]
+smtbmc
+
+[script]
+# Tutorial 8's arbiter is read without -formal, so its own proof's assumption
+# about held requests does not apply here. See wb_arbiter.v.
+a_arb: read -sv fixed_arbiter.v rr_arbiter.v
+a_arb: read -formal wb_checker.v wb_arbiter.v
+a_arb3: chparam -set N 3 wb_arbiter
+a_arb: prep -top wb_arbiter
+a_dma: read -formal wb_checker.v wb_dma.v
+a_dma: prep -top wb_dma
+a_map: read -formal wb_checker.v wb_interconnect.v map_check.v
+a_map: prep -top map_check
+
+[files]
+formal/wb_checker.v
+formal/map_check.v
+rtl/fixed_arbiter.v
+rtl/rr_arbiter.v
+rtl/wb_arbiter.v
+rtl/wb_dma.v
+rtl/wb_interconnect.v
+rtl/soc_map.vh

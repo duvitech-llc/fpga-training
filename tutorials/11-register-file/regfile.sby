@@ -1,0 +1,27 @@
+[tasks]
+r4 prove regs4
+r5 prove regs5
+r3 prove regs3
+r6 prove regs6
+c4 cover regs4
+c5 cover regs5
+
+[options]
+prove: mode prove
+cover: mode cover
+cover: depth 12
+
+[engines]
+smtbmc
+
+[script]
+read -formal regfile.v enreg.v
+regs4: chparam -set REGS 4 regfile
+regs5: chparam -set REGS 5 regfile
+regs3: chparam -set REGS 3 regfile
+regs6: chparam -set REGS 6 regfile
+prep -flatten -top regfile
+
+[files]
+rtl/regfile.v
+rtl/enreg.v

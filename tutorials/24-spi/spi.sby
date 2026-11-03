@@ -1,0 +1,30 @@
+[tasks]
+prove1
+prove2
+prove3
+cover
+
+[options]
+prove1: mode prove
+prove2: mode prove
+prove3: mode prove
+cover: mode cover
+cover: depth 80
+prove1: depth 40
+prove2: depth 40
+prove3: depth 40
+
+[engines]
+smtbmc
+
+[script]
+read -formal shift_reg.v spi_master.v
+prove1: chparam -set DIV_WIDTH 1 spi_master
+prove3: chparam -set DIV_WIDTH 3 spi_master
+prove2: chparam -set DIV_WIDTH 2 spi_master
+cover: chparam -set DIV_WIDTH 2 spi_master
+prep -top spi_master
+
+[files]
+rtl/shift_reg.v
+rtl/spi_master.v

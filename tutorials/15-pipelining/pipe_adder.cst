@@ -1,0 +1,3 @@
+IO_LOC "clk" 52;
+IO_LOC "din" 3;
+IO_LOC "dout" 10;

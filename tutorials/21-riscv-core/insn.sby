@@ -1,0 +1,85 @@
+[tasks]
+upper
+jal
+jalr
+branch
+load
+store
+alu_imm
+shift
+alu_reg
+fence
+trap
+structure
+cover
+
+[options]
+~cover: mode prove
+~cover: depth 12
+cover: mode cover
+cover: depth 16
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal insn_check.v
+read -vlog2k rv32i.v rv_decode.v rv_alu.v rv_regs.v enreg.v
+upper: chparam -set CHECK 1 insn_check
+jal: chparam -set CHECK 2 insn_check
+jalr: chparam -set CHECK 3 insn_check
+branch: chparam -set CHECK 4 insn_check
+load: chparam -set CHECK 5 insn_check
+store: chparam -set CHECK 6 insn_check
+alu_imm: chparam -set CHECK 7 insn_check
+shift: chparam -set CHECK 8 insn_check
+alu_reg: chparam -set CHECK 9 insn_check
+fence: chparam -set CHECK 10 insn_check
+trap: chparam -set CHECK 11 insn_check
+structure: chparam -set CHECK 12 insn_check
+hierarchy -top insn_check
+proc -norom
+flatten
+cd insn_check
+connect -set f_state u_cpu.state
+connect -set f_x1 u_cpu.u_regs.q[1]
+connect -set f_x2 u_cpu.u_regs.q[2]
+connect -set f_x3 u_cpu.u_regs.q[3]
+connect -set f_x4 u_cpu.u_regs.q[4]
+connect -set f_x5 u_cpu.u_regs.q[5]
+connect -set f_x6 u_cpu.u_regs.q[6]
+connect -set f_x7 u_cpu.u_regs.q[7]
+connect -set f_x8 u_cpu.u_regs.q[8]
+connect -set f_x9 u_cpu.u_regs.q[9]
+connect -set f_x10 u_cpu.u_regs.q[10]
+connect -set f_x11 u_cpu.u_regs.q[11]
+connect -set f_x12 u_cpu.u_regs.q[12]
+connect -set f_x13 u_cpu.u_regs.q[13]
+connect -set f_x14 u_cpu.u_regs.q[14]
+connect -set f_x15 u_cpu.u_regs.q[15]
+connect -set f_x16 u_cpu.u_regs.q[16]
+connect -set f_x17 u_cpu.u_regs.q[17]
+connect -set f_x18 u_cpu.u_regs.q[18]
+connect -set f_x19 u_cpu.u_regs.q[19]
+connect -set f_x20 u_cpu.u_regs.q[20]
+connect -set f_x21 u_cpu.u_regs.q[21]
+connect -set f_x22 u_cpu.u_regs.q[22]
+connect -set f_x23 u_cpu.u_regs.q[23]
+connect -set f_x24 u_cpu.u_regs.q[24]
+connect -set f_x25 u_cpu.u_regs.q[25]
+connect -set f_x26 u_cpu.u_regs.q[26]
+connect -set f_x27 u_cpu.u_regs.q[27]
+connect -set f_x28 u_cpu.u_regs.q[28]
+connect -set f_x29 u_cpu.u_regs.q[29]
+connect -set f_x30 u_cpu.u_regs.q[30]
+connect -set f_x31 u_cpu.u_regs.q[31]
+cd ..
+prep -top insn_check
+
+[files]
+tb/insn_check.v
+rtl/rv32i.v
+rtl/rv_decode.v
+rtl/rv_alu.v
+rtl/rv_regs.v
+rtl/enreg.v

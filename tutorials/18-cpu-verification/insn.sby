@@ -1,0 +1,83 @@
+[tasks]
+nop
+halt
+illegal
+arith
+logic
+shift
+cmp
+ldi
+addi
+cmpi
+andi
+ld
+st
+jmp
+bcc
+call
+ret
+push
+pop
+jr
+fetch
+structure
+cover
+
+[options]
+~cover: mode prove
+~cover: depth 13
+cover: mode cover
+cover: depth 16
+
+[engines]
+smtbmc
+
+[script]
+read -formal insn_check.v
+read -vlog2k cpu.v decode.v alu_flags.v regfile.v enreg.v
+nop: chparam -set CHECK 1 insn_check
+halt: chparam -set CHECK 2 insn_check
+illegal: chparam -set CHECK 3 insn_check
+arith: chparam -set CHECK 4 insn_check
+logic: chparam -set CHECK 5 insn_check
+shift: chparam -set CHECK 6 insn_check
+cmp: chparam -set CHECK 7 insn_check
+ldi: chparam -set CHECK 8 insn_check
+addi: chparam -set CHECK 9 insn_check
+cmpi: chparam -set CHECK 10 insn_check
+andi: chparam -set CHECK 11 insn_check
+ld: chparam -set CHECK 12 insn_check
+st: chparam -set CHECK 13 insn_check
+jmp: chparam -set CHECK 14 insn_check
+bcc: chparam -set CHECK 15 insn_check
+call: chparam -set CHECK 16 insn_check
+ret: chparam -set CHECK 17 insn_check
+push: chparam -set CHECK 18 insn_check
+pop: chparam -set CHECK 19 insn_check
+jr: chparam -set CHECK 20 insn_check
+fetch: chparam -set CHECK 21 insn_check
+structure: chparam -set CHECK 22 insn_check
+hierarchy -top insn_check
+proc -norom
+flatten
+cd insn_check
+connect -set f_state u_cpu.state
+connect -set f_pc u_cpu.pc
+connect -set f_r0 u_cpu.u_regfile.q[0]
+connect -set f_r1 u_cpu.u_regfile.q[1]
+connect -set f_r2 u_cpu.u_regfile.q[2]
+connect -set f_r3 u_cpu.u_regfile.q[3]
+connect -set f_z u_cpu.flag_z
+connect -set f_c u_cpu.flag_c
+connect -set f_n u_cpu.flag_n
+connect -set f_v u_cpu.flag_v
+cd ..
+prep -top insn_check
+
+[files]
+tb/insn_check.v
+rtl/cpu.v
+rtl/decode.v
+rtl/alu_flags.v
+rtl/regfile.v
+rtl/enreg.v

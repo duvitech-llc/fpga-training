@@ -1,0 +1,26 @@
+[tasks]
+prove_vga
+prove_small
+cover_tiny
+
+[options]
+prove_vga: mode prove
+prove_small: mode prove
+cover_tiny: mode cover
+cover_tiny: depth 60
+# Deep enough for the base case to reach the end of the first line of the small mode.
+prove_small: depth 60
+
+[engines]
+smtbmc
+
+[script]
+read -formal video_timing.v
+# The small mode of the Makefile, with active-high syncs.
+prove_small: chparam -set H_ACTIVE 32 -set H_FRONT 4 -set H_SYNC 6 -set H_BACK 6 -set V_ACTIVE 24 -set V_FRONT 2 -set V_SYNC 3 -set V_BACK 4 -set H_POL 1 -set V_POL 1 video_timing
+# A frame of 8x6 clocks, so the covers can reach the second frame in a few steps.
+cover_tiny: chparam -set H_ACTIVE 4 -set H_FRONT 1 -set H_SYNC 2 -set H_BACK 1 -set V_ACTIVE 3 -set V_FRONT 1 -set V_SYNC 1 -set V_BACK 1 video_timing
+prep -top video_timing
+
+[files]
+rtl/video_timing.v

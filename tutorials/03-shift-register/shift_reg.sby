@@ -1,0 +1,18 @@
+[tasks]
+width2
+width8
+
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal shift_reg.v
+width2: chparam -set WIDTH 2 shift_reg
+width8: chparam -set WIDTH 8 shift_reg
+prep -top shift_reg
+
+[files]
+rtl/shift_reg.v

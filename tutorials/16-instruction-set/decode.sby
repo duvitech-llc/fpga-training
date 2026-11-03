@@ -1,0 +1,13 @@
+[options]
+mode prove
+depth 1
+
+[engines]
+smtbmc
+
+[script]
+read -formal decode.v
+prep -top decode
+
+[files]
+rtl/decode.v

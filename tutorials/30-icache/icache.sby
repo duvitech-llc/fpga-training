@@ -1,0 +1,39 @@
+[tasks]
+cache        prove cache
+cache_cover  cover cache
+cache_l1     prove cache l1
+xip          prove xip
+xip_cover    cover xip
+map          prove map
+map_cover    cover map
+
+[options]
+prove: mode prove
+prove: depth 12
+xip: depth 8
+map: depth 8
+cover: mode cover
+cover: depth 24
+
+[engines]
+smtbmc
+
+[script]
+cache: read -formal icache.v
+cache: chparam -set LINES 4 -set LINE_WORDS 2 icache
+l1: chparam -set LINES 4 -set LINE_WORDS 1 icache
+cache: prep -top icache
+xip: read -formal wb_checker.v wb_xip.v
+xip: read -formal spi_master_free.v
+xip: prep -top wb_xip
+map: read -formal wb_checker.v wb_interconnect.v map_check.v
+map: prep -top map_check
+
+[files]
+formal/wb_checker.v
+formal/map_check.v
+formal/spi_master_free.v
+rtl/icache.v
+rtl/wb_xip.v
+rtl/wb_interconnect.v
+rtl/soc_map.vh

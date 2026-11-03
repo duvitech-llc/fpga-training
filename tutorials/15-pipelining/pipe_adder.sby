@@ -1,0 +1,22 @@
+[tasks]
+s1
+s2
+s3
+s4
+
+[options]
+mode prove
+
+[engines]
+smtbmc
+
+[script]
+read -formal pipe_adder.v
+s1: chparam -set STAGES 1 pipe_adder
+s2: chparam -set STAGES 2 pipe_adder
+s3: chparam -set STAGES 3 pipe_adder
+s4: chparam -set STAGES 4 pipe_adder
+prep -top pipe_adder
+
+[files]
+rtl/pipe_adder.v

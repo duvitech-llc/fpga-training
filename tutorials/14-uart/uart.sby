@@ -1,0 +1,67 @@
+[tasks]
+tx4
+tx10
+tx16
+rx4
+rx10
+rx16
+tx_cover
+rx_cover
+loop4
+loop16
+
+[options]
+tx4: mode prove
+tx10: mode prove
+tx16: mode prove
+rx4: mode prove
+rx10: mode prove
+rx16: mode prove
+tx_cover: mode cover
+rx_cover: mode cover
+loop4: mode bmc
+loop16: mode bmc
+tx_cover: depth 50
+rx_cover: depth 60
+loop4: depth 50
+loop16: depth 190
+
+[engines]
+smtbmc
+
+[script]
+tx4: read -formal uart_tx.v
+tx10: read -formal uart_tx.v
+tx16: read -formal uart_tx.v
+tx_cover: read -formal uart_tx.v
+rx4: read -formal uart_rx.v
+rx10: read -formal uart_rx.v
+rx16: read -formal uart_rx.v
+rx_cover: read -formal uart_rx.v
+loop4: read -formal uart_tx.v uart_rx.v uart.v uart_loop_formal.v
+loop16: read -formal uart_tx.v uart_rx.v uart.v uart_loop_formal.v
+tx4: chparam -set CLKS_PER_BIT 4 uart_tx
+tx10: chparam -set CLKS_PER_BIT 10 uart_tx
+tx16: chparam -set CLKS_PER_BIT 16 uart_tx
+tx_cover: chparam -set CLKS_PER_BIT 4 uart_tx
+rx4: chparam -set CLKS_PER_BIT 4 uart_rx
+rx10: chparam -set CLKS_PER_BIT 10 uart_rx
+rx16: chparam -set CLKS_PER_BIT 16 uart_rx
+rx_cover: chparam -set CLKS_PER_BIT 4 uart_rx
+tx4: prep -top uart_tx
+tx10: prep -top uart_tx
+tx16: prep -top uart_tx
+tx_cover: prep -top uart_tx
+rx4: prep -top uart_rx
+rx10: prep -top uart_rx
+rx16: prep -top uart_rx
+rx_cover: prep -top uart_rx
+loop16: chparam -set CLKS_PER_BIT 16 uart_loop_formal
+loop4: prep -top uart_loop_formal
+loop16: prep -top uart_loop_formal
+
+[files]
+rtl/uart_tx.v
+rtl/uart_rx.v
+rtl/uart.v
+tb/uart_loop_formal.v

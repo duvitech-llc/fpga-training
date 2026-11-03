@@ -1,0 +1,22 @@
+[tasks]
+rules prove ports
+data prove words
+data32 prove words
+reach ports
+
+[options]
+prove: mode prove
+reach: mode cover
+reach: depth 10
+
+[engines]
+smtbmc
+
+[script]
+ports: read -formal skid_buffer.v
+words: read -formal -D CHECK_DATA skid_buffer.v
+data32: chparam -set WIDTH 32 skid_buffer
+prep -top skid_buffer
+
+[files]
+rtl/skid_buffer.v

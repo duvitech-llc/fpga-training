@@ -1,0 +1,19 @@
+[tasks]
+w8
+w32
+
+[options]
+mode prove
+depth 1
+
+[engines]
+smtbmc
+
+[script]
+read -formal alu.v
+w8: chparam -set WIDTH 8 alu
+w32: chparam -set WIDTH 32 alu
+prep -top alu
+
+[files]
+rtl/alu.v

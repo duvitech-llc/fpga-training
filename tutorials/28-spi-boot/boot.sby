@@ -1,0 +1,47 @@
+[tasks]
+rom          prove rom
+rom_cover    cover rom
+spi          prove spi
+spi_cover    cover spi
+crc          prove crc
+crc_cover    cover crc
+map          prove map
+map_cover    cover map
+
+[options]
+prove: mode prove
+prove: depth 8
+spi: depth 24
+cover: mode cover
+cover: depth 24
+spi_cover: depth 48
+
+[engines]
+# The interconnect's own cover of every target answering in one cycle needs 20
+# steps with nine targets. Yices was still searching step 19 after 8 minutes,
+# and bitwuzla reached it in 95 seconds, so the map's cover run uses bitwuzla.
+~map_cover: smtbmc
+map_cover: smtbmc bitwuzla
+
+[script]
+rom: read -formal wb_checker.v wb_rom.v
+rom: prep -top wb_rom
+spi: read -formal wb_checker.v wb_spi.v
+spi: read -sv spi_master.v shift_reg.v
+spi: prep -top wb_spi
+crc: read -formal wb_checker.v wb_crc.v crc32_byte.v
+crc: prep -top wb_crc
+map: read -formal wb_checker.v wb_interconnect.v map_check.v
+map: prep -top map_check
+
+[files]
+formal/wb_checker.v
+formal/map_check.v
+rtl/wb_rom.v
+rtl/wb_spi.v
+rtl/spi_master.v
+rtl/shift_reg.v
+rtl/wb_crc.v
+rtl/crc32_byte.v
+rtl/wb_interconnect.v
+rtl/soc_map.vh

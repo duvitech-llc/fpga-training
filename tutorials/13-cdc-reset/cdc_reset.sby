@@ -1,0 +1,30 @@
+[tasks]
+sync_prove   sync  prove
+pulse_prove  pulse prove
+reset_prove  reset prove
+sync_cover   sync  cover
+pulse_cover  pulse cover
+reset_cover  reset cover
+
+[options]
+prove: mode prove
+cover: mode cover
+multiclock on
+depth 30
+
+[engines]
+smtbmc
+
+[script]
+sync: read -define CHECK_SYNC_2FF
+pulse: read -define CHECK_PULSE_SYNC
+reset: read -define CHECK_RESET_SYNC
+read -formal sync_2ff.v pulse_sync.v reset_sync.v
+sync: prep -flatten -top sync_2ff
+pulse: prep -flatten -top pulse_sync
+reset: prep -flatten -top reset_sync
+
+[files]
+rtl/sync_2ff.v
+rtl/pulse_sync.v
+rtl/reset_sync.v

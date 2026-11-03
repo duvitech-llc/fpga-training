@@ -1,0 +1,30 @@
+[tasks]
+gray_a2 gray a2
+gray_a3 gray a3
+gray_a4 gray a4
+fifo_a2 fifo a2
+fifo_a3 fifo a3
+fifo_a4 fifo a4
+cover_a2 cover a2
+
+[options]
+gray: mode prove
+fifo: mode prove
+cover: mode cover
+multiclock on
+depth 40
+
+[engines]
+smtbmc
+
+[script]
+gray: read -define CHECK_GRAY
+read -formal gray_ptr.v async_fifo.v
+a2: chparam -set ADDR_WIDTH 2 async_fifo
+a3: chparam -set ADDR_WIDTH 3 async_fifo
+a4: chparam -set ADDR_WIDTH 4 async_fifo
+prep -flatten -top async_fifo
+
+[files]
+rtl/async_fifo.v
+rtl/gray_ptr.v

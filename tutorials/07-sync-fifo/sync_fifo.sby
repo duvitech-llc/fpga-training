@@ -1,0 +1,21 @@
+[tasks]
+depth4 proof
+depth16 proof
+cover
+
+[options]
+proof: mode prove
+cover: mode cover
+
+[engines]
+smtbmc
+
+[script]
+read -formal sync_fifo.v
+depth4: chparam -set DEPTH 4 sync_fifo
+depth16: chparam -set DEPTH 16 sync_fifo
+cover: chparam -set DEPTH 4 sync_fifo
+prep -top sync_fifo
+
+[files]
+rtl/sync_fifo.v

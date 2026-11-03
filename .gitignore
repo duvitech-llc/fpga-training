@@ -1,0 +1,8 @@
+# Simulation output
+build/
+__pycache__/
+*.vcd
+*.fst
+*.vvp
+a.out
+obj_dir/

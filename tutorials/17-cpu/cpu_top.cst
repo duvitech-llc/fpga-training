@@ -1,0 +1,5 @@
+IO_LOC "clk" 52;
+IO_LOC "rst" 3;
+IO_LOC "halted" 10;
+IO_LOC "illegal" 11;
+IO_LOC "retire" 13;

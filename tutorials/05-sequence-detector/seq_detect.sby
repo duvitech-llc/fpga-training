@@ -1,0 +1,18 @@
+[tasks]
+prove
+cover
+
+[options]
+prove: mode prove
+cover: mode cover
+cover: depth 20
+
+[engines]
+smtbmc
+
+[script]
+read -formal seq_detect.v
+prep -top seq_detect
+
+[files]
+rtl/seq_detect.v

@@ -1,0 +1,38 @@
+[tasks]
+wb_bridge          prove wbb
+wb_bridge_cover    cover wbb
+wb_axil            prove wba
+wb_axil_cover      cover wba
+axil_direct        prove rab
+axil_direct_cover  cover rab
+map                prove map
+map_cover          cover map
+
+[options]
+prove: mode prove
+prove: depth 8
+cover: mode cover
+cover: depth 16
+
+[engines]
+smtbmc
+
+[script]
+wbb: read -formal wb_checker.v rv_wb_bridge.v
+wbb: prep -top rv_wb_bridge
+wba: read -formal wb_checker.v axil_checker.v wb_axil_bridge.v
+wba: prep -top wb_axil_bridge
+rab: read -formal axil_checker.v rv_axil_bridge.v
+rab: prep -top rv_axil_bridge
+map: read -formal wb_checker.v wb_interconnect.v map_check.v
+map: prep -top map_check
+
+[files]
+formal/wb_checker.v
+formal/axil_checker.v
+formal/map_check.v
+rtl/rv_wb_bridge.v
+rtl/wb_axil_bridge.v
+rtl/rv_axil_bridge.v
+rtl/wb_interconnect.v
+rtl/soc_map.vh
